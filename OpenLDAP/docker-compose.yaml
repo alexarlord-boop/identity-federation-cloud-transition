@@ -1,0 +1,29 @@
+networks:
+  my-network:
+    driver: bridge
+services:
+  openldap:
+    # image: bitnami/openldap:latest
+    build: .
+    ports:
+      - '389:389'
+      - '636:636'
+    environment:
+      - LDAP_DOMAIN=example.org
+      - LDAP_ORGANIZATION="Example Org"
+      - LDAP_ROOT_PW=ciaoldap
+      - LDAP_IDPUSER_PW=idpuserpass
+      - LDAP_HOSTNAME=ldap.example.org
+      # - LDAP_ADMIN_USERNAME=admin
+      # - LDAP_ADMIN_PASSWORD=adminpassword
+      # - LDAP_USERS=user01,user02
+      # - LDAP_PASSWORDS=password1,password2
+    container_name: openldap
+    networks:
+      - my-network
+    volumes:
+      - 'openldap_data:/bitnami/openldap'
+
+volumes:
+  openldap_data:
+    driver: local
