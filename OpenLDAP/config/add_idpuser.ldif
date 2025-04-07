@@ -3,7 +3,8 @@ objectClass: inetOrgPerson
 cn: idpuser
 sn: idpuser
 givenName: idpuser
-userPassword: <INSERT-HERE-IDPUSER-PW>
+# userPassword: <INSERT-HERE-IDPUSER-PW>
+userPassword: testpwd
 
 # Enhanced production version might include:
 # dn: cn=idpuser,ou=system,dc=example,dc=org

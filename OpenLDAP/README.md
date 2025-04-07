@@ -18,3 +18,11 @@ docker run -d \
   --name openldap \
   openldap-federated
 ```
+
+## Verification commands for development
+```bash
+ldapsearch -x -D 'cn=idpuser,ou=system,dc=example,dc=org' -w 'testpwd' -b 'uid=user1,ou=people,dc=example,dc=org'
+```
+
+## Report
+- [Progress, blockers and todos](https://docs.google.com/document/d/13kXmicqnvwM-VU4mUSMKZiNfFI7eMamBXGW1rvczs1E/edit?tab=t.0)

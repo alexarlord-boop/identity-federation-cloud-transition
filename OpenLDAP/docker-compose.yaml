@@ -19,6 +19,7 @@ services:
       # - LDAP_USERS=user01,user02
       # - LDAP_PASSWORDS=password1,password2
     container_name: openldap
+    hostname: ldap.example.org # This is the hostname of the container (installlation step 5)
     networks:
       - my-network
     volumes:
