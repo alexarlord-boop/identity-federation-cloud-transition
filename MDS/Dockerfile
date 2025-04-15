@@ -1,66 +1,78 @@
-# Base image
-FROM php:5.6-apache
+FROM php:7.4-apache
 
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install required system packages and PHP extensions
+# Install requirements
 RUN apt-get update && apt-get install -y \
     git \
-    curl \
-    unzip \
-    mysql-client \
-    memcached \
+    wget \
+    libzip-dev \
+    libicu-dev \
+    libcurl4-openssl-dev \
     libmemcached-dev \
-    libmcrypt-dev \
-    libapache2-mod-php \
-    php5-cli \
-    php5-curl \
-    php5-mysql \
-    php5-mcrypt \
-    php-apc \
-    php-memcached \
-    apache2-utils \
-    xmlsec1 \
-    openjdk-6-jdk \
+    zlib1g-dev \
+    libpq-dev \
+    default-mysql-client \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mysqli intl zip curl opcache bcmath
+RUN pecl install memcached apcu && docker-php-ext-enable memcached apcu
+
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
 
 # Enable Apache modules
-RUN a2enmod rewrite unique_id
+RUN a2enmod rewrite headers unique_id
 
-# Set working directory
-WORKDIR /usr/local/www-sites/rr3
 
-# Clone Jagger and CodeIgniter repositories
-RUN git clone https://github.com/your-jagger-repo-url.git /usr/local/www-sites/rr3
-RUN git clone git://github.com/bcit-ci/CodeIgniter.git /opt/codeigniter
+# Set working directories
+RUN mkdir -p /opt/codeigniter /opt/rr3
 
-# Configure Apache
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
-COPY php.ini /usr/local/etc/php/
+# Install CodeIgniter
+RUN curl -L https://github.com/bcit-ci/CodeIgniter/archive/3.1.5.zip -o ci.zip \
+    && unzip ci.zip \
+    && mv CodeIgniter-3.1.5/* /opt/codeigniter/ \
+    && rm -rf CodeIgniter-3.1.5 ci.zip
 
-# Set up the application
-RUN chown -R www-data:www-data /usr/local/www-sites/rr3
-RUN chmod -R 755 /usr/local/www-sites/rr3
+# Clone JAGGER
+RUN git clone https://github.com/Edugate/Jagger /opt/rr3
 
-# Set up MySQL database and permissions (note: assuming MySQL is running externally or you have a separate DB container)
-RUN echo "CREATE DATABASE rr CHARACTER SET utf8 COLLATE utf8_general_ci;" | mysql -u root
-RUN echo "GRANT ALL ON rr.* TO 'rr'@'localhost' IDENTIFIED BY 'rr12';" | mysql -u root
-RUN echo "FLUSH PRIVILEGES;" | mysql -u root
+# Set Apache DocumentRoot
+ENV APACHE_DOCUMENT_ROOT=/opt/rr3
+RUN sed -i "s|/var/www/html|/opt/rr3|g" /etc/apache2/sites-available/000-default.conf
 
-# Run Composer install for CodeIgniter dependencies
-WORKDIR /usr/local/www-sites/rr3/application
-RUN /usr/local/bin/composer install
+# Copy Apache config
+COPY jagger.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Set up permissions for the application directory
-RUN mkdir -p /usr/local/www-sites/rr3/application/models/Proxies
-RUN chmod -R 755 /usr/local/www-sites/rr3/application/models/Proxies
+# Install dependencies via Composer
+WORKDIR /opt/rr3/application
+RUN composer install
 
-# Expose Apache port
+# Set index.php
+COPY index.php /opt/rr3/index.php
+
+# Copy config templates
+COPY /conf/*.php /opt/rr3/application/config
+
+# Permissions
+RUN mkdir -p /opt/rr3/application/cache /opt/rr3/application/models/Proxies \
+    && chown -R www-data:www-data /opt/rr3 \
+    && chown -R www-data:www-data /opt/rr3/application/config \
+    && chmod -R 755 /opt/rr3/application/config
+
+RUN chown -R www-data:www-data /opt/rr3 /opt/codeigniter \
+    && chmod -R 755 /opt/rr3 /opt/codeigniter \
+    && chmod -R 775 /opt/rr3/application/cache /opt/rr3/application/models/Proxies /opt/rr3/application/logs /opt/rr3/application/system
+
+
+# Entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 80
 
-# Start Apache
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["apache2-foreground"]

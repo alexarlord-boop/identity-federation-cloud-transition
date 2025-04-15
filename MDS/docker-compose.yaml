@@ -1,0 +1,35 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      - memcached
+    environment:
+      - DB_HOST=db
+      - DB_USER=rr3user
+      - DB_PASS=rr3pass
+      - DB_NAME=rr3
+    volumes:
+      - ./index.php:/opt/rr3/index.php
+      - ./conf/config.php:/opt/rr3/application/config/config.php
+      - ./conf/config_rr.php:/opt/rr3/application/config/config_rr.php
+      - ./conf/database.php:/opt/rr3/application/config/database.php
+
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=rr3
+      - MYSQL_USER=rr3user
+      - MYSQL_PASSWORD=rr3pass
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  memcached:
+    image: memcached:latest
+
+volumes:
+  mysql_data:
