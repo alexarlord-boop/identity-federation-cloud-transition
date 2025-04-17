@@ -8,3 +8,5 @@ services:
       - "8080:8080"
     volumes:
       - ./conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
+      - ./conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
+      - ./certs:/opt/shibboleth-idp/certs:ro
