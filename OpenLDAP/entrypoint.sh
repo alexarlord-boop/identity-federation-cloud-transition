@@ -14,7 +14,7 @@ init_config() {
     local pid=$!
     
     # Wait for server to be ready
-    timeout 30 bash -c "until ldapwhoami -H ldapi:/// 2>/dev/null; do sleep 1; done"
+    timeout 20 bash -c "until ldapwhoami -H ldapi:/// 2>/dev/null; do sleep 1; done"
     
     # Apply configurations
     # (2) Configure LDAP for SSL
@@ -27,8 +27,8 @@ init_config() {
     echo "CONFIG: creating idpuser"
     ldapadd -x -D "cn=admin,$BASE_DN" -w "$LDAP_ROOT_PW" -H ldapi:/// -f /etc/ldap/scratch/add_idpuser.ldif
     # (5) Configure OpenLDAP ACL to allow idpuser to perform search operation on the directory
-    # echo "CONFIG: allowing idpuser to perform search operation on the directory"
-    # ldapadd  -Y EXTERNAL -H ldapi:/// -f /etc/ldap/scratch/olcAcl.ldif
+    echo "CONFIG: allowing idpuser to perform search operation on the directory"
+    ldapadd  -Y EXTERNAL -H ldapi:/// -f /etc/ldap/scratch/olcAcl.ldif
     # (6) verifications
     echo "CONFIG: verifications"
     ldapsearch -x -b "$BASE_DN"
