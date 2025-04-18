@@ -1,0 +1,4 @@
+dn: ou=policies,dc=example,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: policies
