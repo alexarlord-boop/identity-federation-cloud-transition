@@ -1,0 +1,16 @@
+dn: cn=idpuser,ou=system,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: idpuser
+sn: idpuser
+givenName: idpuser
+# userPassword: <INSERT-HERE-IDPUSER-PW>
+userPassword: testpwd
+
+# Enhanced production version might include:
+# dn: cn=idpuser,ou=system,dc=example,dc=org
+# objectClass: inetOrgPerson
+# objectClass: organizationalRole
+# cn: idpuser
+# sn: LDAP Service Account
+# description: Account for IdP system bind/search operations
+# userPassword: {CRYPT}$6$rounds=656000$saltvalue$hashedpassword
