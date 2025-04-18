@@ -21,13 +21,17 @@ docker run -d \
 
 ## Verification commands for development
 ```bash
-ldapsearch -x -D 'cn=idpuser,ou=system,dc=example,dc=org' -w 'testpwd' -b 'uid=user1,ou=people,dc=example,dc=org'
-```
-
-
-```bash
+# step 12
 ldapsearch -Y EXTERNAL -H ldapi:/// -b "dc=example,dc=org"
+
+# step 13
+ldapsearch -x -D 'cn=idpuser,ou=system,dc=example,dc=org' -w 'testpwd' -b 'uid=user1,ou=people,dc=example,dc=org'
+
+# step 14
+ldapwhoami -H ldap:// -x -ZZ
+
 ```
+
 
 
 ## Report
