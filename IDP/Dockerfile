@@ -47,6 +47,10 @@ RUN curl -LO https://repo.maven.apache.org/maven2/org/jakarta/jakarta.servlet.js
 # FROM tomcat:10.1-jdk17 AS run
 FROM tomcat:10.1-jre17-temurin AS run
 
+RUN apt-get update && \
+    apt-get install -y ldap-utils && \
+    rm -rf /var/lib/apt/lists/*
+
 ENV IDP_VERSION=5.1.4
 
 COPY --from=idp /opt/shibboleth-idp /opt/shibboleth-idp

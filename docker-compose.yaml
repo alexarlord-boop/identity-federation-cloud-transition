@@ -1,0 +1,37 @@
+services:
+  idp:
+    build:
+      context: ./IDP
+      dockerfile: Dockerfile
+    container_name: shibboleth-idp
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    volumes:
+      - ./IDP/conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
+      - ./IDP/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
+      - ./IDP/conf/attribute-resolver.xml:/opt/shibboleth-idp/conf/attribute-resolver.xml
+      - ./IDP/conf/ldap.properties:/opt/shibboleth-idp/conf/ldap.properties
+      - ./IDP/certs:/opt/shibboleth-idp/certs:ro
+  openldap:
+    build:
+      context: ./OpenLDAP
+      dockerfile: Dockerfile
+    ports:
+      - '389:389'
+      - '636:636'
+    environment:
+      - LDAP_DOMAIN=example.org
+      - LDAP_ORGANIZATION="Example Org"
+      - LDAP_ROOT_PW=ciaoldap
+      - LDAP_IDPUSER_PW=idpuserpass
+      - LDAP_HOSTNAME=ldap.example.org
+    container_name: openldap
+    hostname: ldap.example.org # This is the hostname of the container (installlation step 5)
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

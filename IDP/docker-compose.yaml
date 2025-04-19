@@ -9,4 +9,6 @@ services:
     volumes:
       - ./conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
       - ./conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
+      - ./conf/attribute-resolver.xml:/opt/shibboleth-idp/conf/attribute-resolver.xml
+      - ./conf/ldap.properties:/opt/shibboleth-idp/conf/ldap.properties
       - ./certs:/opt/shibboleth-idp/certs:ro
