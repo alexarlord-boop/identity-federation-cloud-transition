@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: idp-dr
+spec:
+  host: idp
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: sp-dr
+spec:
+  host: sp
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN

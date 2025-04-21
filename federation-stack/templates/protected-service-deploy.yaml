@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: protected-service
+spec:
+  replicas: {{ .Values.protected_service.replicas }}
+  selector:
+    matchLabels:
+      app: protected-service
+  template:
+    metadata:
+      labels:
+        app: protected-service
+    spec:
+      containers:
+      - name: protected-service
+        image: {{ .Values.protected_service.image }}
+        ports:
+        - containerPort: 8080

@@ -1,0 +1,23 @@
+# TODO: update images for federation stack components
+idp:
+  # image: myregistry/idp:latest
+  image: nginx:latest
+  replicas: 1
+
+ldap:
+  image: osixia/openldap:1.5.0
+  replicas: 1
+
+sp:
+  # image: myregistry/sp:latest
+  image: nginx:latest
+  replicas: 1
+
+protected_service:
+  image: httpd:2.4
+  replicas: 1
+
+mds:
+  # image: myregistry/jagger:latest
+  image: nginx:latest
+  replicas: 1
