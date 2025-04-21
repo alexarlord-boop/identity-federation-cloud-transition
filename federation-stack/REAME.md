@@ -19,20 +19,29 @@ helm install istiod istio/istiod -n istio-system \
 
 helm install istio-ingress istio/gateway -n istio-system
 
-kubectl create namespace federation
-kubectl label namespace federation istio-injection=enabled
 
 ## Kiali + Prometheus + Jaeger + Grafana
-
-
 helm install prometheus istio/prometheus -n istio-system
 helm install grafana istio/grafana -n istio-system
 helm install jaeger istio/jaeger -n istio-system
 
+istioctl dashboard kiali
+
+
+## Creating dedicated namespace
+kubectl create namespace federation
+kubectl label namespace federation istio-injection=enabled
+kubectl label namespace federation app.kubernetes.io/managed-by=Helm --overwrite
+kubectl annotate namespace federation meta.helm.sh/release-name=federation-stack --overwrite
+kubectl annotate namespace federation meta.helm.sh/release-namespace=federation --overwrite
+
+kubectl delete namespace federation 
+
 
 ## Install the federation stack
-helm install federation-stack ./federation-stack --dry-run --debug
-helm install federation-stack ./federation-stack
-helm upgrade --install federation-stack ./federation-stack
-helm uninstall federation-stack 
+helm install federation-stack ./federation-stack --namespace federation --dry-run --debug
+helm install federation-stack ./federation-stack --namespace federation
+helm upgrade --install federation-stack ./federation-stack --namespace federation
+
+helm uninstall federation-stack --namespace federation
 
