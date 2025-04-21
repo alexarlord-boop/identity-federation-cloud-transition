@@ -4,7 +4,7 @@ metadata:
   name: idp-vs
 spec:
   hosts:
-  - idp.local
+  - "*"
   gateways:
   - federation-gateway
   http:
@@ -15,7 +15,7 @@ spec:
     - destination:
         host: idp
         port:
-          number: 8080
+          number: 80
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
@@ -23,7 +23,7 @@ metadata:
   name: sp-vs
 spec:
   hosts:
-  - sp.local
+  - "*"
   gateways:
   - federation-gateway
   http:
@@ -34,4 +34,4 @@ spec:
     - destination:
         host: sp
         port:
-          number: 8080
+          number: 80

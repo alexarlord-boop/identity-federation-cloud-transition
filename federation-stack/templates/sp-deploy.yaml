@@ -16,4 +16,4 @@ spec:
       - name: sp
         image: {{ .Values.sp.image }}
         ports:
-        - containerPort: 8080
+        - containerPort: 80

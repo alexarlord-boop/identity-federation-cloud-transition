@@ -4,7 +4,6 @@ metadata:
   name: federation-gateway
 spec:
   selector:
-    # istio: ingressgateway -- must match Istio's ingressgateway service
     istio: ingress
   servers:
   - port:
@@ -12,5 +11,4 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "idp.local"
-    - "sp.local"
+    - "*"
