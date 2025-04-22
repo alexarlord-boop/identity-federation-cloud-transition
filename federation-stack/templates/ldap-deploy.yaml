@@ -16,4 +16,4 @@ spec:
       - name: ldap
         image: {{ .Values.ldap.image }}
         ports:
-        - containerPort: 8080
+        - containerPort: 389

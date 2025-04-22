@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mds
+  name: protected-service
 spec:
   selector:
-    app: mds
+    app: protected-service
   ports:
     - port: 80
       targetPort: 80

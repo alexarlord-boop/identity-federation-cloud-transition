@@ -41,7 +41,7 @@ kubectl delete namespace federation
 ## Install the federation stack
 helm install federation-stack ./federation-stack --namespace federation --dry-run --debug
 helm install federation-stack ./federation-stack --namespace federation
-helm upgrade --install federation-stack ./federation-stack --namespace federation
+helm upgrade federation-stack ./federation-stack --namespace federation
 
 helm uninstall federation-stack --namespace federation
 

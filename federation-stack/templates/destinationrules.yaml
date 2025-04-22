@@ -17,3 +17,23 @@ spec:
   trafficPolicy:
     loadBalancer:
       simple: ROUND_ROBIN
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: ldap-dr
+spec:
+  host: ldap
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: mds-dr
+spec:
+  host: mds
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
