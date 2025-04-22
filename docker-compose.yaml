@@ -1,5 +1,6 @@
 services:
   idp:
+    hostname: idp.localtest.me
     build:
       context: ./IDP
       dockerfile: Dockerfile
@@ -8,11 +9,15 @@ services:
       - "8080:8080"
     networks:
       - my-network
+    depends_on:
+      - openldap
     volumes:
       - ./IDP/conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
       - ./IDP/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
       - ./IDP/conf/attribute-resolver.xml:/opt/shibboleth-idp/conf/attribute-resolver.xml
       - ./IDP/conf/ldap.properties:/opt/shibboleth-idp/conf/ldap.properties
+      - ./IDP/conf/metadata-providers.xml:/opt/shibboleth-idp/conf/metadata-providers.xml
+      - ./IDP/metadata/sp-metadata.xml:/opt/shibboleth-idp/metadata/sp-metadata.xml
       - ./IDP/certs:/opt/shibboleth-idp/certs:ro
   openldap:
     build:
@@ -31,7 +36,34 @@ services:
     hostname: ldap.example.org # This is the hostname of the container (installlation step 5)
     networks:
       - my-network
-
+  sp:
+    hostname: localhost
+    build:
+      context: ./SP
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    container_name: sp
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      # - ./apache/default.conf:/etc/httpd/conf.d/ssl.conf:ro
+      - ./SP/ssl:/etc/ssl/private:ro
+      # - ./shibboleth:/etc/shibboleth:ro
+    environment:
+      - SHIBBOLETH_SP_HOSTNAME=sp.localtest.me
+    # restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "https://localhost/Shibboleth.sso/Status"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    depends_on:
+      - idp
+      - openldap
+    networks:
+      - my-network
 networks:
   my-network:
     driver: bridge

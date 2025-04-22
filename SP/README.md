@@ -23,8 +23,8 @@ Helper and check commands
 1. shibd -t
 
 URLs that must work
-1. https://localhost/Shibboleth.sso/Metadata
-1. https://localhost/Shibboleth.sso/Status
+1. https://sp.localtest.me/Shibboleth.sso/Metadata
+1. https://sp.localtest.me/Shibboleth.sso/Status
 
 
 ### Configuration

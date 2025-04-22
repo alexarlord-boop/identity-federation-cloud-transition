@@ -1,0 +1,113 @@
+<!--
+This is example metadata only. Do *NOT* supply it as is without review,
+and do *NOT* provide it in real time to your partners.
+ -->
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_5cbf3b3ca4ba3207bf1d1a91c77144e50dd900f4" entityID="https://sp.localtest.me/shibboleth">
+
+  <md:Extensions xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport">
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha384"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#sha224"/>
+    <alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2009/xmldsig11#dsa-sha256"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
+  </md:Extensions>
+
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:Extensions>
+      <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://sp.localtest.me/Shibboleth.sso/Login"/>
+      <idpdisc:DiscoveryResponse xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Location="https://sp.localtest.me/Shibboleth.sso/Login" index="1"/>
+    </md:Extensions>
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>buildkitsandbox</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=buildkitsandbox</ds:X509SubjectName>
+          <ds:X509Certificate>MIID/zCCAmegAwIBAgIUOWZcq7IwZuOYNQGe5us3ujw3+gEwDQYJKoZIhvcNAQEL
+BQAwGjEYMBYGA1UEAxMPYnVpbGRraXRzYW5kYm94MB4XDTI1MDQxNjE1MzAwMVoX
+DTM1MDQxNDE1MzAwMVowGjEYMBYGA1UEAxMPYnVpbGRraXRzYW5kYm94MIIBojAN
+BgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAv1pfcsR4aCbXnQFEr0unD20hKSXg
+Tqx3MjuPetAURkZNrjzFrFU5fezFDTSvmbODmRzcoWp9qhGIRwrw67mFslwxdGpJ
+qk8UtSqfGA/x/3+qUJSMNJzbC1/WSurB4+/7THqeH13qgAFyXr8xEZPc2n+0Q2Av
+wV/RQMlvwANQXpPOJ8PHAwb5ymf7TuBwTsjGPUr3Odb+sN02RmVVvAKs7WTPQ5/U
+3ekDvuWt6TZwHX+yKt5vfvljf4RTrHHi7TfdpCECgJM2IYXMvO0+RZeHu3udljY4
+m+3ZhevgiLYasDmGDMXi/x9XTNBShXJvf+rFs7yAzjWMZNDkAKmYPnBeuct/aOC3
+JVAMzj3TDG1wCI/wNpHabTCnj7+GhJRMN70SFudEEC+AQQP3baW8xf0ZrhFKi/cI
+C6oeX9RgxT4uVas9WXJ1LAuqR3G36xYymrY+z7m8GZTxGoHwRmYRYekONwoGqLUL
+yRjtdBJ0WEn3WBgcT3NL3/J2JB880PVKCdwxAgMBAAGjPTA7MBoGA1UdEQQTMBGC
+D2J1aWxka2l0c2FuZGJveDAdBgNVHQ4EFgQUb/4h5B8mMqQd0d8AIiQpo5PV1RMw
+DQYJKoZIhvcNAQELBQADggGBAJ6dIBD0410XdoJlqDHOvofyYe3B+q5lZkXp/ZWc
+STwPXxpu31VEAthjkMExDRLgYJ4GCdxZ21i2iwlaK7pnHz0BcPMQFwCSbjfEBsnI
+r4qkHjXipkGnCmwaP0SJkbeoO6Kyt8iFc4YrdDcpHfT12DVOWMDt38M6tkI0Pff4
+stXg7GfgrlKU2Sv4WS40LTqqTTBMgB+B6VbfTZHoPtBTemOsd5tSK0zymfp3ktNG
+ELx3ruTh9KWeAM5K0mDYZIIYhaJXIfYwOhcHpqh9Wqc69RWk3SHm7aDLLT783Pd0
+s7/CueRXy+4d3aBgcwP1oOxd4UIIF0ZNyFSQuOy7spgzePu2XBaiGl9zE00jbjFR
+nHl/AuIck6voAET7plI3gyPxhv3Xg1OXS/IBcj14NnuxhaEdAkzA3P8F6xWDmR6U
+iWTw62jAGvzMQSTShGZGD/scH/4SQo8GBQMJvovn7L263NwXTZL5ZX7F8xIzT1gJ
+2wGM78ocOtGwn3i6P2ffvDw1eQ==
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>buildkitsandbox</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=buildkitsandbox</ds:X509SubjectName>
+          <ds:X509Certificate>MIID/zCCAmegAwIBAgIUOC3u9WpOMKh/4q1XOUgWcMJEzZQwDQYJKoZIhvcNAQEL
+BQAwGjEYMBYGA1UEAxMPYnVpbGRraXRzYW5kYm94MB4XDTI1MDQxNjE1MzAwMloX
+DTM1MDQxNDE1MzAwMlowGjEYMBYGA1UEAxMPYnVpbGRraXRzYW5kYm94MIIBojAN
+BgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAlE/bHlVww2zzkS8dgtS53ODag1o/
+fV11FYPE5Le8kXyewruZHM90uJXe6lBx8mGgPCkU6b2NUfCcoItzJ4bequJVDZpc
+JalRRP8jTXiaRoQ/AnxODwQbIFawiHek7BvtbXLEYQOXZ2WUEOztyGHDIaj2moI+
+m9vt//YR7X0le7ALnBDfGB3ORc9VopD1fxYg8HqAxWQMgK2mfqF64k38SLrblqxA
+nbwiAxMBT6J5ORElfFQvo9VrOAnk5ZypECEUDILSpLOa05oZuSUApSP3Tv0cppEJ
+KZ0qJRxABngvnxL81uYRic0PF8hl8mzatDxP2vElvVkVzzgGjxLSMCsx6DDnalbr
+ZsMsYOmA/soK/lZiCzHFg6gnhtBt434zY8QFfGc2W3zEJSWrZvleFq8I7Ec9bLyB
+kxMoTM2coFxmnmnVvSz7AsoakoNTZwcOKNxvoyIz7oblPhElODx64BXbjZ5KY4Xn
+DrEV8UOlK5yq30gAvztknAIkw50hATFcL/cXAgMBAAGjPTA7MBoGA1UdEQQTMBGC
+D2J1aWxka2l0c2FuZGJveDAdBgNVHQ4EFgQUbjhtXkJF578oofej5N9CyhpZkHow
+DQYJKoZIhvcNAQELBQADggGBAABfp9UsZy/YM8CR3HlMN6elv/WUurwySm3RTjRr
+SwH/UkZguKotgctK/YGJDItHvROYt8iiC2KaTZ1auusWLdDtxZ0Eqp1+/t9NoUip
+cJtR/eCf/vctXbec1mpurouXvfidkWnO2GfKEbp1t+S2SW8jrS0LghJyR1QMJWrN
+L01gxqvgM4X7foQrQm4wIp27iRAL6MOJPl/oRTWq3CNaSjr/L9iZy2NI1uFumxkK
+yu7j+CrPSNMMEC7qM2oKvxqbSYh9bQyjcG/mz5dhbumJsjrQkL60Z7UUM9Jm8edN
+BqapAN/HPyPDx6DI/xR4EHUMgF7SVi/W1JTQjxWRka1wNnwLECgZUGyAZi9ATKj6
+lhfmHoJQkiGywQ1WFaMPLx0rgfUxzJJckS1a/5bX48meXEyXmZmTtAlORu2pFGBR
+uOag/ApKCMQDycZf2zbenxPm+t21Iq8cO3QiRZtlD7lnQTCgT9tYxexLxun67vyS
+XAviNtGPRfIyi2GTqKkJNT/6OQ==
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes128-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes192-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes256-gcm"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep"/>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+    </md:KeyDescriptor>
+    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sp.localtest.me/Shibboleth.sso/Artifact/SOAP" index="1"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sp.localtest.me/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://sp.localtest.me/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.localtest.me/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.localtest.me/Shibboleth.sso/SLO/Artifact"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.localtest.me/Shibboleth.sso/SAML2/POST" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://sp.localtest.me/Shibboleth.sso/SAML2/POST-SimpleSign" index="2"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.localtest.me/Shibboleth.sso/SAML2/Artifact" index="3"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://sp.localtest.me/Shibboleth.sso/SAML2/ECP" index="4"/>
+  </md:SPSSODescriptor>
+
+</md:EntityDescriptor>

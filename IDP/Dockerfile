@@ -21,9 +21,9 @@ WORKDIR /opt/idp-install
 RUN bin/install.sh \
     --targetDir /opt/shibboleth-idp \
     --noPrompt \
-    --hostName idp.example.com \
+    --hostName idp.localtest.me \
     --scope example.com \
-    --entityID https://idp.example.com/idp/shibboleth \
+    --entityID https://idp.localtest.me/idp/shibboleth \
     --keystorePassword changeit \
     --sealerPassword changeit
 

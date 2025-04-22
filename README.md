@@ -16,3 +16,11 @@ Commands for verifying OpenLDAP connection:
 # This command will return the user information for uid=user1
 ldapsearch -x -H ldap://openldap -D "cn=idpuser,ou=system,dc=example,dc=org" -w idpuserpass -b "ou=people,dc=example,dc=org" "(uid=user1)"
 ```
+
+## 2. IDP, LDAP, SP
+
+todos:
+1. automate validUntil attr on IDP metadata
+1. jakarta.servlet-api-5.0.0.jar is corrupted
+1. Unable to find property resource 'ServletContext resource [/opt/shibboleth-idp%{idp.home}/conf/ldap.properties]'
+1. 

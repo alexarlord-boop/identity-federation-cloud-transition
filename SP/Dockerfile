@@ -13,8 +13,11 @@ RUN dnf -y update && \
 # Copy configuration files
 COPY apache/shib.conf /etc/httpd/conf.d/shib.conf
 COPY /shibboleth/shibboleth2.xml /etc/shibboleth/shibboleth2.xml
-# COPY /shibboleth/partner-metadata.xml /etc/shibboleth/partner-metadata.xml
+COPY /metadata/idp-metadata.xml /etc/shibboleth/idp-metadata.xml
 COPY /shibboleth/ssl.conf /etc/httpd/conf.d/ssl.conf
+
+RUN chown -R shibd:shibd /etc/shibboleth/
+RUN chown -R shibd:shibd /var/cache/shibboleth/
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

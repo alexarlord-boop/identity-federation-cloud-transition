@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MetadataProvider id="HTTPMetadata"
+                  xsi:type="FileBackedHTTPMetadataProvider"
+                  backingFile="/opt/shibboleth-idp/metadata/sp-metadata.xml"
+                  metadataURL="https://sp.localtest.me/Shibboleth.sso/Metadata"
+                  failFastInitialization="false"/>
