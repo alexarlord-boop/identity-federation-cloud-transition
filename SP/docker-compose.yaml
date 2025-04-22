@@ -1,0 +1,27 @@
+services:
+  shibboleth-sp:
+    hostname: localhost
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      # - ./apache/default.conf:/etc/httpd/conf.d/ssl.conf:ro
+      - ./ssl:/etc/ssl/private:ro
+      # - ./shibboleth:/etc/shibboleth:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost/Shibboleth.sso/Status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sp-network
+
+networks:
+  sp-network:
+    driver: bridge
