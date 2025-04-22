@@ -13,6 +13,11 @@ Commands
 1. tail -n 50 /opt/shibboleth-idp/logs/idp-process.log
 1. tail -n 50 /opt/shibboleth-idp/logs/idp-warn.log
 1. /opt/shibboleth-idp/bin/module.sh -l
+1. /opt/shibboleth-idp/bin/build.sh reload-service --name shibboleth.AttributeResolverService
+
+
+URLs to work:
+1. /idp/shibboleth
 
 
 Certs generation
