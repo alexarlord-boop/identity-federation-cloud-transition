@@ -14,6 +14,9 @@ Commands
 1. tail -n 50 /opt/shibboleth-idp/logs/idp-warn.log
 1. /opt/shibboleth-idp/bin/module.sh -l
 1. /opt/shibboleth-idp/bin/build.sh reload-service --name shibboleth.AttributeResolverService
+1. bash /opt/shibboleth-idp/bin/status.sh
+1. ldapsearch -x -H ldap://openldap -D 'cn=idpuser,ou=system,dc=example,dc=org' -w 'idpuserpass' -b 'ou=people,dc=example,dc=org' '(uid=user1)'
+
 
 
 URLs to work:

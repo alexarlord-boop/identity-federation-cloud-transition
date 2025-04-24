@@ -1,9 +1,3 @@
-<!--
- This is example metadata only. Do *NOT* supply it as is without review,
-and do *NOT* provide it in real time to your partners.
-This metadata is not dynamic - it will not change as your configuration changes.
-On Demand Metadata Generation available from the metadatagen plugin.
--->
 <!-- NEED TO AUTOMATE VALID UNTIL ATTR -->
 <md:EntityDescriptor entityID="https://idp.localtest.me/idp/shibboleth" validUntil="2025-04-29T00:00:00Z" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
     <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -97,6 +91,13 @@ cYaM7VjCv6r4LxBq8jeQ1A818IHueOS3euc8GuVfXHRmbE+l1MQPGLtszsHHHA==
             </ds:KeyInfo>
         </md:KeyDescriptor>
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp.localtest.me/idp/profile/SAML2/SOAP/ArtifactResolution" />
+       
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.localtest.me/idp/idp/profile/SAML2/Redirect/SLO"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.localtest.me/idp/profile/SAML2/POST/SLO"/>
+       
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+
         <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://idp.localtest.me/idp/profile/SAML2/POST-SimpleSign/SSO" />
         <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.localtest.me/idp/profile/SAML2/Redirect/SSO" />
         <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.localtest.me/idp/profile/SAML2/POST/SSO" />

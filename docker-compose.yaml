@@ -13,11 +13,17 @@ services:
       - openldap
     volumes:
       - ./IDP/conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
+      - ./IDP/conf/secrets.properties:/opt/shibboleth-idp/credentials/secrets.properties
       - ./IDP/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
       - ./IDP/conf/attribute-resolver.xml:/opt/shibboleth-idp/conf/attribute-resolver.xml
+      - ./IDP/conf/attribute-filter.xml:/opt/shibboleth-idp/conf/attribute-filter.xml
       - ./IDP/conf/ldap.properties:/opt/shibboleth-idp/conf/ldap.properties
+      - ./IDP/conf/saml-nameid.xml:/opt/shibboleth-idp/conf/saml-nameid.xml
+      - ./IDP/conf/saml-nameid.properties:/opt/shibboleth-idp/conf/saml-nameid.properties
+      - ./IDP/conf/eduPersonTargetedID.properties:/opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
       - ./IDP/conf/metadata-providers.xml:/opt/shibboleth-idp/conf/metadata-providers.xml
       - ./IDP/metadata/sp-metadata.xml:/opt/shibboleth-idp/metadata/sp-metadata.xml
+      - ./IDP/metadata/idp-metadata.xml:/opt/shibboleth-idp/metadata/idp-metadata.xml
       - ./IDP/certs:/opt/shibboleth-idp/certs:ro
   openldap:
     build:

@@ -1,107 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-This file is a rudimentary example. While it is semi-functional, it isn't very
-interesting. It is here only as a starting point for your deployment process
-to avoid any dependency on components like an LDAP directory.
 
-Very few attribute definitions and data connectors are demonstrated, and the
-data is derived statically from the logged-in username and a static example
-connector.
-
-The file(s) in the examples directory contain more examples that involve more
-complex approaches. Deployers should refer to the documentation for a complete
-list of possible components and their options.
--->
 <AttributeResolver
-        xmlns="urn:mace:shibboleth:2.0:resolver" 
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns="urn:mace:shibboleth:2.0:resolver"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="urn:mace:shibboleth:2.0:resolver http://shibboleth.net/schema/idp/shibboleth-attribute-resolver.xsd">
-
 
     <!-- ========================================== -->
     <!--      Attribute Definitions                 -->
     <!-- ========================================== -->
 
-    <!--
-    The EPPN is the "standard" federated username in higher ed.
-    For guidelines on the implementation of this attribute, refer
-    to the Shibboleth and eduPerson documentation. Above all, do
-    not expose a value for this attribute without considering the
-    long term implications. 
-    -->
-    <AttributeDefinition id="eduPersonPrincipalName" xsi:type="Scoped" scope="%{idp.scope}">
-        <InputAttributeDefinition ref="uid" />
+    <AttributeDefinition scope="%{idp.scope}" xsi:type="Scoped" id="eduPersonScopedAffiliation">
+        <InputDataConnector ref="myLDAP" attributeNames="eduPersonAffiliation" />
     </AttributeDefinition>
 
-    <!--
-    The uid is the closest thing to a "standard" LDAP attribute
-    representing a local username, but you should generally *never*
-    expose uid to federated services, as it is rarely globally unique.
-    -->
-    <AttributeDefinition id="uid" xsi:type="PrincipalName" />
-
-    <!--
-    In the rest of the world, the email address is the standard identifier,
-    despite the problems with that practice. Consider making the EPPN
-    value the same as your official email addresses whenever possible.
-    -->
-    <AttributeDefinition id="mail" xsi:type="Template">
-        <InputAttributeDefinition ref="uid" />
-        <Template>
-          <![CDATA[
-               ${uid}@example.org
-          ]]>
-        </Template>
+    <AttributeDefinition scope="%{idp.scope}" xsi:type="Scoped" id="eduPersonPrincipalName">
+        <InputDataConnector ref="myLDAP" attributeNames="%{idp.persistentId.sourceAttribute}" />
     </AttributeDefinition>
 
+    <!-- AttributeDefinition for eduPersonTargetedID - Computed Mode -->
     <!--
-    This is an example of an attribute sourced from a data connector.
+       WARN [DEPRECATED:173] - xsi:type 'SAML2NameID'
+       This feature is at-risk for removal in a future version
+
+       NOTE: eduPersonTargetedID is DEPRECATED and should not be used.
     -->
-    <AttributeDefinition id="eduPersonScopedAffiliation" xsi:type="Scoped" scope="%{idp.scope}">
-        <InputDataConnector ref="staticAttributes" attributeNames="affiliation" />
+    <AttributeDefinition xsi:type="SAML2NameID" nameIdFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" id="eduPersonTargetedID">
+        <InputDataConnector ref="computed" attributeNames="computedId"/>
+        <!--<InputDataConnector ref="stored" attributeNames="storedId" />-->
     </AttributeDefinition>
 
+    <AttributeDefinition xsi:type="Simple" id="schacHomeOrganization">
+        <InputDataConnector ref="staticAttributes" attributeNames="schacHomeOrganization"/>
+    </AttributeDefinition>
+
+    <AttributeDefinition xsi:type="Simple" id="schacHomeOrganizationType">
+        <InputDataConnector ref="staticAttributes" attributeNames="schacHomeOrganizationType"/>
+    </AttributeDefinition>
 
     <!-- ========================================== -->
     <!--      Data Connectors                       -->
     <!-- ========================================== -->
 
-    <DataConnector id="staticAttributes" xsi:type="Static" exportAttributes="schacHomeOrganization">
-        <Attribute id="schacHomeOrganization">
-            <Value>%{idp.scope}</Value>
-        </Attribute>
-        <Attribute id="affiliation">
-            <Value>member</Value>
-        </Attribute>
-    </DataConnector>
-
+    <!-- LDAP Connector -->
+    <!-- useStartTLS="%{idp.attribute.resolver.LDAP.useStartTLS}" -->
+    <!-- trustFile="%{idp.attribute.resolver.LDAP.trustCertificates}" -->
     <DataConnector id="myLDAP" xsi:type="LDAPDirectory"
-        ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}" 
-        baseDN="%{idp.attribute.resolver.LDAP.baseDN}" 
+        ldapURL="%{idp.attribute.resolver.LDAP.ldapURL}"
+        baseDN="%{idp.attribute.resolver.LDAP.baseDN}"
         principal="%{idp.attribute.resolver.LDAP.bindDN}"
         principalCredential="%{idp.attribute.resolver.LDAP.bindDNCredential}"
-        trustFile="%{idp.attribute.resolver.LDAP.trustCertificates}"
-        useStartTLS="%{idp.attribute.resolver.LDAP.useStartTLS:true}"
-        noResultIsError="%{idp.attribute.resolver.LDAP.noResultsIsError:false}"
-        multipleResultsIsError="%{idp.attribute.resolver.LDAP.multipleResultsIsError:true}">
+       
+        connectTimeout="%{idp.attribute.resolver.LDAP.connectTimeout}"
+       
+        responseTimeout="%{idp.attribute.resolver.LDAP.responseTimeout}"
+        multipleResultsIsError="true"
+        exportAttributes="%{idp.attribute.resolver.LDAP.exportAttributes}">
         <FilterTemplate>
             <![CDATA[
                 %{idp.attribute.resolver.LDAP.searchFilter}
             ]]>
         </FilterTemplate>
-        <!-- <StartTLSAuthenticationCredential xsi:type="security:X509Filesystem" xmlns:security="urn:mace:shibboleth:2.0:security" id="IdPtoLDAPCredential">
-            <security:PrivateKey>%{idp.attribute.resolver.LDAP.authenticationKey}</security:PrivateKey>
-            <security:Certificate>%{idp.attribute.resolver.LDAP.authenticationCertificate}</security:Certificate>
-        </StartTLSAuthenticationCredential> -->
         <ConnectionPool
-            minPoolSize="%{idp.pool.LDAP.minSize}"
-            maxPoolSize="%{idp.pool.LDAP.maxSize}"
-            blockWaitTime="%{idp.pool.LDAP.blockWaitTime}"
-            expirationTime="%{idp.pool.LDAP.expirationTime}"
-            validatePeriodically="%{idp.pool.LDAP.validatePeriodically}"
-            validateTimerPeriod="%{idp.pool.LDAP.validatePeriod}"
-            validateDN="%{idp.pool.LDAP.validateDN}"
-            validateFilter="%{idp.pool.LDAP.validateFilter}"/>
+            minPoolSize="%{idp.pool.LDAP.minSize:3}"
+            maxPoolSize="%{idp.pool.LDAP.maxSize:10}"
+            blockWaitTime="%{idp.pool.LDAP.blockWaitTime:PT3S}"
+            validatePeriodically="%{idp.pool.LDAP.validatePeriodically:true}"
+            validateTimerPeriod="%{idp.pool.LDAP.validatePeriod:PT5M}"
+            validateDN="%{idp.pool.LDAP.validateDN:}"
+            validateFilter="%{idp.pool.LDAP.validateFilter:(objectClass=*)}"
+            expirationTime="%{idp.pool.LDAP.idleTime:PT10M}"/>
+
     </DataConnector>
+
+    <!-- Data Connector for eduPersonTargetedID - Computed Mode -->
+    <DataConnector id="computed" xsi:type="ComputedId"
+        generatedAttributeID="computedId"
+        salt="%{idp.persistentId.salt}"
+        algorithm="%{idp.persistentId.algorithm:SHA}"
+        encoding="%{idp.persistentId.encoding:BASE32}">
+
+        <InputDataConnector ref="myLDAP" attributeNames="%{idp.persistentId.sourceAttribute}" />
+
+    </DataConnector>
+
+    <!-- Data Connector for eduPersonTargetedID - Stored Mode -->
+    <!--
+    <DataConnector id="stored" xsi:type="StoredId"
+        generatedAttributeID="storedId"
+        salt="%{idp.persistentId.salt}"
+        queryTimeout="PT5S">
+
+        <InputDataConnector ref="myLDAP" attributeNames="%{idp.persistentId.sourceAttribute}" />
+
+        <BeanManagedConnection>shibpid.JDBCStorageService.DataSource</BeanManagedConnection>
+    </DataConnector>
+    -->
+
+    <!-- Example Data Connector for static attributes -->
+    <DataConnector id="staticAttributes" xsi:type="Static">
+        <Attribute id="schacHomeOrganization">
+            <Value>%{idp.scope}</Value>
+        </Attribute>
+        <!-- One of the values defined here:
+             https://wiki.refeds.org/pages/viewpage.action?pageId=44957715#SCHACURNRegistry-homeOrganizationType
+        -->
+        <Attribute id="schacHomeOrganizationType">
+            <Value>urn:schac:homeOrganizationType:eu:higherEducationalInstitution</Value>
+        </Attribute>
+     </DataConnector>
 
 </AttributeResolver>
