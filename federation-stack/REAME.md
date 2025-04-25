@@ -19,6 +19,10 @@ helm install istiod istio/istiod -n istio-system \
 
 helm install istio-ingress istio/gateway -n istio-system
 
+helm uninstall istio-ingress -n istio-system
+helm uninstall istiod -n istio-system
+helm uninstall istio-base -n istio-system
+
 
 ## Kiali + Prometheus + Jaeger + Grafana
 helm install prometheus istio/prometheus -n istio-system
@@ -26,6 +30,7 @@ helm install grafana istio/grafana -n istio-system
 helm install jaeger istio/jaeger -n istio-system
 
 istioctl dashboard kiali
+
 
 
 ## Creating dedicated namespace
