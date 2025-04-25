@@ -21,6 +21,7 @@ Commands
 
 URLs to work:
 1. /idp/shibboleth
+1. /idp/status
 
 
 Certs generation

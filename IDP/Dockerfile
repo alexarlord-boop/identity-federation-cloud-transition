@@ -37,7 +37,7 @@ RUN curl -LO https://repo1.maven.org/maven2/jakarta/servlet/jakarta.servlet-api/
 
 # Jakarta JSTL 2.0.0 (API + Impl)
 RUN curl -LO https://repo1.maven.org/maven2/jakarta/servlet/jsp/jstl/jakarta.servlet.jsp.jstl-api/2.0.0/jakarta.servlet.jsp.jstl-api-2.0.0.jar && \
-    curl -LO https://repo1.maven.org/maven2/jakarta/servlet/jsp/jstl/jakarta.servlet.jsp.jstl/2.0.0/jakarta.servlet.jsp.jstl-2.0.0.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/glassfish/web/jakarta.servlet.jsp.jstl/2.0.0/jakarta.servlet.jsp.jstl-2.0.0.jar && \
     mkdir -p /opt/jakarta-jstl && \
     mv jakarta.servlet.jsp.jstl-api-2.0.0.jar /opt/jakarta-jstl/ && \
     mv jakarta.servlet.jsp.jstl-2.0.0.jar /opt/jakarta-jstl/
