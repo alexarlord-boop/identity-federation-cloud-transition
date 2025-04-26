@@ -39,7 +39,7 @@ services:
       - LDAP_IDPUSER_PW=idpuserpass
       - LDAP_HOSTNAME=ldap.example.org
     container_name: openldap
-    hostname: ldap.example.org # This is the hostname of the container (installlation step 5)
+    hostname: openldap # This is the hostname of the container (installlation step 5)
     networks:
       - my-network
   sp:

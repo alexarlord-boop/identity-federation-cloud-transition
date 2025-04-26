@@ -49,7 +49,7 @@
     <logger name="net.shibboleth.shared" level="${idp.loglevel.shared}"/>
     
     <!-- Logs LDAP related messages -->
-    <logger name="org.ldaptive" level="${idp.loglevel.ldap}"/>
+    <logger name="org.ldaptive" level="DEBUG"/>
 
      <!-- Logs on LDAP user authentication - ADDED BY GEANT HOWTO -->
     <logger name="org.ldaptive.auth.Authenticator" level="INFO" />

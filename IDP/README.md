@@ -16,6 +16,7 @@ Commands
 1. /opt/shibboleth-idp/bin/build.sh reload-service --name shibboleth.AttributeResolverService
 1. bash /opt/shibboleth-idp/bin/status.sh
 1. ldapsearch -x -H ldap://openldap -D 'cn=idpuser,ou=system,dc=example,dc=org' -w 'idpuserpass' -b 'ou=people,dc=example,dc=org' '(uid=user1)'
+1. ldapwhoami -H ldap://openldap:389 -D "cn=idpuser,ou=system,dc=example,dc=org" -w 'idpuserpass'
 
 
 

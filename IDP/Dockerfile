@@ -76,7 +76,7 @@ COPY /conf/ldap.properties /opt/shibboleth-idp/conf/ldap.properties
 COPY /conf/saml-nameid.xml /opt/shibboleth-idp/conf/saml-nameid.xml
 COPY /conf/saml-nameid.properties /opt/shibboleth-idp/conf/saml-nameid.properties
 COPY /conf/eduPersonTargetedID.properties /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
-COPY /conf/metadata-providers.xml /opt/shibboleth-idp/conf/metadata-providers.xml
+# COPY /conf/metadata-providers.xml /opt/shibboleth-idp/conf/metadata-providers.xml
 # Just copied the file, no volume
 COPY /conf/logback.xml /opt/shibboleth-idp/conf/logback.xml
 COPY /metadata/sp-metadata.xml /opt/shibboleth-idp/metadata/sp-metadata.xml
