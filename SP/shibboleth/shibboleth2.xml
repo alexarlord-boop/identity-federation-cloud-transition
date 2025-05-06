@@ -28,7 +28,7 @@
 
         </Sessions>
 
-        <MetadataProvider type="XML" url="http://idp.localtest.me:8080/idp/shibboleth"
+        <MetadataProvider type="XML" url="https://idp.localtest.me/idp/shibboleth"
                         backingFilePath="/etc/shibboleth/idp-metadata.xml"
                         reloadInterval="7200">
             <MetadataFilter type="RequireValidUntil" maxValidityInterval="2419200"/>

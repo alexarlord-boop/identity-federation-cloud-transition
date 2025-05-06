@@ -32,3 +32,18 @@ openssl req -x509 -newkey rsa:2048 -keyout ./certs/signing-private-key.pem -out 
 openssl req -x509 -newkey rsa:2048 -keyout ./certs/encryption-private-key.pem -out ./certs/encryption-certificate.pem -days 365 -nodes
 
 ```
+
+
+TLS
+
+```bash
+keytool -genkeypair \
+  -alias tomcat \
+  -keyalg RSA \
+  -keystore keystore.p12 \
+  -storeType PKCS12 \
+  -storepass changeit \
+  -validity 365 \
+  -keysize 2048 \
+  -dname "CN=idp.localtest.me, OU=Dev, O=MyOrg, L=City, S=State, C=CY"
+```

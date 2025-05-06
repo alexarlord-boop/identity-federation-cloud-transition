@@ -7,11 +7,15 @@ services:
     container_name: idp
     ports:
       - "8080:8080"
+      # - "8443:8443"
+      - "443:8443"
     networks:
       - my-network
     depends_on:
-      - openldap
+      openldap:
+        condition: service_healthy  
     volumes:
+      - ./IDP/conf/server.xml:/usr/local/tomcat/conf/server.xml
       - ./IDP/conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
       - ./IDP/conf/secrets.properties:/opt/shibboleth-idp/credentials/secrets.properties
       - ./IDP/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
@@ -32,6 +36,11 @@ services:
     ports:
       - '389:389'
       - '636:636'
+    healthcheck:
+      test: ["CMD", "ldapsearch", "-x", "-D", 'cn=idpuser,ou=system,dc=example,dc=org',  "-w", 'idpuserpass', "-b", "uid=user1,ou=people,dc=example,dc=org"]   
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - LDAP_DOMAIN=example.org
       - LDAP_ORGANIZATION="Example Org"
@@ -43,7 +52,7 @@ services:
     networks:
       - my-network
   sp:
-    hostname: localhost
+    hostname: sp.localtest.me
     build:
       context: ./SP
       dockerfile: Dockerfile
@@ -51,7 +60,7 @@ services:
         - linux/amd64
     container_name: sp
     ports:
-      - "443:443"
+      - "8443:443"
       - "80:80"
     volumes:
       # - ./apache/default.conf:/etc/httpd/conf.d/ssl.conf:ro

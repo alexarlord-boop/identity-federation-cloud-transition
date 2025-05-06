@@ -46,6 +46,9 @@ RUN curl -LO https://repo1.maven.org/maven2/jakarta/servlet/jsp/jstl/jakarta.ser
 # FROM tomcat:10.1-jdk17 AS run
 FROM tomcat:10.1-jre17-temurin AS run
 
+# TLS configuration
+COPY /certs/keystore.p12 /usr/local/tomcat/conf/keystore.p12
+
 RUN apt-get update && \
     apt-get install -y ldap-utils && \
     rm -rf /var/lib/apt/lists/*
@@ -88,4 +91,4 @@ RUN chown root:root /opt/shibboleth-idp/conf/attribute-resolver.xml
 
 
 
-EXPOSE 8080
+EXPOSE 8080 8443 443

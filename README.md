@@ -24,3 +24,8 @@ todos:
 1. jakarta.servlet-api-5.0.0.jar is corrupted
 1. Unable to find property resource 'ServletContext resource [/opt/shibboleth-idp%{idp.home}/conf/ldap.properties]'
 1. 
+
+
+LDAP: remake healthcheck and ldif seeding
+
+SP: secure directory is malformed -- rebuild image?

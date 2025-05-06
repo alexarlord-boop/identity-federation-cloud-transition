@@ -21,6 +21,8 @@ Helper and check commands
 1. tail -f /var/log/shibboleth/shibd.log
 1. shibd -f
 1. shibd -t
+1. cat /var/log/shibboleth/shibd.log
+1. cat /var/log/shibboleth/transaction.log
 
 URLs that must work
 1. https://sp.localtest.me/Shibboleth.sso/Metadata

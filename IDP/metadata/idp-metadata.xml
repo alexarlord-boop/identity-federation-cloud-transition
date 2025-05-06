@@ -91,8 +91,7 @@ cYaM7VjCv6r4LxBq8jeQ1A818IHueOS3euc8GuVfXHRmbE+l1MQPGLtszsHHHA==
             </ds:KeyInfo>
         </md:KeyDescriptor>
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp.localtest.me/idp/profile/SAML2/SOAP/ArtifactResolution" />
-       
-        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.localtest.me/idp/idp/profile/SAML2/Redirect/SLO"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.localtest.me/idp/profile/SAML2/Redirect/SLO"/>
         <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.localtest.me/idp/profile/SAML2/POST/SLO"/>
        
         <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
