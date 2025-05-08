@@ -2,10 +2,24 @@
 
 [Istio Service Mesh Installation](https://istio.io/latest/docs/setup/getting-started/)
 
+
 ## Istio via ctl - needs CNI troubleshooting
 istioctl install --set profile=demo -y     
 kubectl label namespace default istio-injection=enabled
 istioctl uninstall --purge -
+
+
+
+## GKE VMs verification
+gcloud compute instances list --filter="name:gke-cloud-federation" --format="table(name, tags.items)"
+
+
+
+## Cluster Operational View
+git clone  https://github.com/schoolofdevops/kube-ops-view
+kubectl apply -f kube-ops-view/deploy/
+
+
 
 ## Istio via helm
 helm repo add istio https://istio-release.storage.googleapis.com/charts
@@ -25,6 +39,7 @@ helm uninstall istio-base -n istio-system
 
 
 ## Kiali + Prometheus + Jaeger + Grafana
+helm repo update
 helm install prometheus istio/prometheus -n istio-system
 helm install grafana istio/grafana -n istio-system
 helm install jaeger istio/jaeger -n istio-system
@@ -50,3 +65,9 @@ helm upgrade federation-stack ./federation-stack --namespace federation
 
 helm uninstall federation-stack --namespace federation
 
+
+
+# Troubleshooting
+
+kubectl get events --namespace=default
+kubectl get pods --all-namespaces 
