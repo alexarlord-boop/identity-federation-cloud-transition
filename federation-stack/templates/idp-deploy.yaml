@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idp
+spec:
+  replicas: {{ .Values.idp.replicas }}
+  selector:
+    matchLabels:
+      app: idp
+  template:
+    metadata:
+      labels:
+        app: idp
+    spec:
+      containers:
+      - name: idp
+        image: {{ .Values.idp.image }}
+        ports:
+        - containerPort: 80

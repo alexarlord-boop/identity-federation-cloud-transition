@@ -1,0 +1,4 @@
+apiVersion: v2
+name: federation-stack
+description: A Helm chart for federated identity stack with service mesh
+version: 0.1.0

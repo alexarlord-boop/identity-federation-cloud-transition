@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sp
+spec:
+  replicas: {{ .Values.sp.replicas }}
+  selector:
+    matchLabels:
+      app: sp
+  template:
+    metadata:
+      labels:
+        app: sp
+    spec:
+      containers:
+      - name: sp
+        image: {{ .Values.sp.image }}
+        ports:
+        - containerPort: 80

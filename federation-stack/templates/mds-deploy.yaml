@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mds
+spec:
+  replicas: {{ .Values.mds.replicas }}
+  selector:
+    matchLabels:
+      app: mds
+  template:
+    metadata:
+      labels:
+        app: mds
+    spec:
+      containers:
+      - name: mds
+        image: {{ .Values.mds.image }}
+        ports:
+        - containerPort: 8080
