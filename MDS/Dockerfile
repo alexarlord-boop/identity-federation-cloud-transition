@@ -64,7 +64,8 @@ RUN mkdir -p /opt/rr3/application/cache /opt/rr3/application/models/Proxies \
 
 RUN chown -R www-data:www-data /opt/rr3 /opt/codeigniter \
     && chmod -R 755 /opt/rr3 /opt/codeigniter \
-    && chmod -R 775 /opt/rr3/application/cache /opt/rr3/application/models/Proxies /opt/rr3/application/logs /opt/rr3/application/system
+    && chmod -R 775 /opt/rr3/application/cache /opt/rr3/application/models/Proxies /opt/rr3/application/logs 
+    # /opt/rr3/application/system
 
 
 # Entrypoint script
