@@ -1,23 +1,126 @@
-# TODO: update images for federation stack components
-idp:
-  # image: myregistry/idp:latest
-  image: nginx:latest
-  replicas: 1
+# values.yaml — umbrella chart for federation-stack
 
+## Global settings applied to all subcharts
+global:
+  # Domain under which all federation services are exposed
+  domain: "federation.example.org"
+
+  # TLS issuer configured via cert-manager
+  tls:
+    issuerName: "letsencrypt-prod"
+    secretName: "federation-tls-cert"
+
+  # eduGAIN MDQ endpoint for metadata synchronization
+  eduGAIN:
+    mdqUrl: "https://mdq.geant.org/entities"
+
+  # Default resource requests/limits (can be overridden per chart)
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+## LDAP subchart values
 ldap:
-  image: osixia/openldap:1.5.0
-  replicas: 1
+  replicaCount: 1
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    size: "10Gi"
+  ldap:
+    rootPassword: "CHANGE_ME_LDAP_PASSWORD"    # sealed-secret in practice
+    baseDN: "dc=example,dc=org"
+    initLDIF: |
+      dn: dc=example,dc=org
+      objectClass: top
+      objectClass: dcObject
+      objectClass: organization
+      o: Example Org
+      dc: example
 
+      dn: ou=people,dc=example,dc=org
+      objectClass: organizationalUnit
+      ou: people
+
+## IdP subchart values
+idp:
+  replicaCount: 2
+  entityID: "https://idp.federation.example.org/idp/shibboleth"
+  hostname: "idp.federation.example.org"
+  ingress:
+    enabled: true
+    path: /idp
+  ldap:
+    url: "ldap://ldap.federation.example.org:389"
+    bindDN: "cn=admin,dc=example,dc=org"
+    bindPassword: "CHANGE_ME_LDAP_PASSWORD"    # sealed-secret in practice
+  metadata:
+    signingKeySecret: "idp-signing-key"       # pre-created Kubernetes Secret
+    encryptionKeySecret: "idp-encryption-key"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+
+## SP subchart values
 sp:
-  # image: myregistry/sp:latest
-  image: nginx:latest
-  replicas: 1
+  replicaCount: 2
+  entityID: "https://sp.federation.example.org/shibboleth"
+  hostname: "sp.federation.example.org"
+  ingress:
+    enabled: true
+    path: /sp
+  metadata:
+    idpMetadataUrl: "https://idp.federation.example.org/idp/shibboleth"
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 70
+  resources:
+    requests:
+      cpu: "150m"
+      memory: "256Mi"
+    limits:
+      cpu: "750m"
+      memory: "768Mi"
 
-protected_service:
-  image: httpd:2.4
-  replicas: 1
+## Jagger subchart values
+jagger:
+  replicaCount: 1
+  hostname: "registry.federation.example.org"
+  ingress:
+    enabled: true
+    path: /metadata
+  database:
+    username: "jaggeruser"
+    password: "CHANGE_ME_DB_PASSWORD"          # sealed-secret in practice
+    name: "jaggerdb"
+    persistence:
+      enabled: true
+      storageClass: "standard"
+      size: "5Gi"
+  syncJob:
+    enabled: true
+    schedule: "0 * * * *"                     # hourly sync
+    mdqUrl: "https://mdq.geant.org/entities"
 
-mds:
-  # image: myregistry/jagger:latest
-  image: nginx:latest
-  replicas: 1
+## Optional overrides for environments
+# development:
+#   global:
+#     domain: "dev.federation.example.org"
+#     eduGAIN:
+#       mdqUrl: "https://mdq-dev.geant.org/entities"
+#
+# staging:
+#   global:
+#     domain: "staging.federation.example.org"
+#     tls:
+#       issuerName: "letsencrypt-staging"
+
