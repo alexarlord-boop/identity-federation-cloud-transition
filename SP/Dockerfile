@@ -29,8 +29,4 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 443
 
-# CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-# # CMD ["httpd", "-DFOREGROUND"]
-# # ENTRYPOINT ["shibd-apache2"]
-
 CMD ["/entrypoint.sh"]

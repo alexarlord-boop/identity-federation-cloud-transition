@@ -12,7 +12,7 @@ WORKDIR /opt
 RUN curl -LO https://shibboleth.net/downloads/identity-provider/latest5/shibboleth-identity-provider-${IDP_VERSION}.tar.gz  && \
     tar -xzf shibboleth-identity-provider-${IDP_VERSION}.tar.gz
 
-# Set up IdP installation (simulate installer; you'll usually run `install.sh`)
+# Set up IdP installation
 RUN mkdir -p /opt/idp-install && \
     cp -r shibboleth-identity-provider-${IDP_VERSION}/* /opt/idp-install/
 
@@ -43,7 +43,6 @@ RUN curl -LO https://repo1.maven.org/maven2/jakarta/servlet/jsp/jstl/jakarta.ser
     mv jakarta.servlet.jsp.jstl-2.0.0.jar /opt/jakarta-jstl/
 
 ### Final Image ###
-# FROM tomcat:10.1-jdk17 AS run
 FROM tomcat:10.1-jre17-temurin AS run
 
 # TLS configuration
@@ -58,16 +57,12 @@ ENV IDP_VERSION=5.1.4
 COPY --from=idp /opt/shibboleth-idp /opt/shibboleth-idp
 COPY --from=idp /opt/shibboleth-idp/war/idp.war /usr/local/tomcat/webapps/idp.war
 
-# Copy Jakarta Servlet API jar into Tomcat's lib directory
-# COPY --from=jakarta_servlet /opt/jakarta-servlet-api/jakarta.servlet-api-5.0.0.jar /usr/local/tomcat/lib/
-
 # Copy JSTL jars into Tomcat's lib directory
 COPY --from=jakarta_servlet /opt/jakarta-jstl/jakarta.servlet.jsp.jstl-api-2.0.0.jar /usr/local/tomcat/lib/
 COPY --from=jakarta_servlet /opt/jakarta-jstl/jakarta.servlet.jsp.jstl-2.0.0.jar /usr/local/tomcat/lib/
 
 RUN chmod 644 /usr/local/tomcat/lib/jakarta.servlet.jsp.jstl-2.0.0.jar \
     && chmod 644 /usr/local/tomcat/lib/jakarta.servlet.jsp.jstl-api-2.0.0.jar
-
 
 # Copy custom configuration files
 COPY /conf/idp.properties /opt/shibboleth-idp/conf/idp.properties
@@ -79,7 +74,7 @@ COPY /conf/ldap.properties /opt/shibboleth-idp/conf/ldap.properties
 COPY /conf/saml-nameid.xml /opt/shibboleth-idp/conf/saml-nameid.xml
 COPY /conf/saml-nameid.properties /opt/shibboleth-idp/conf/saml-nameid.properties
 COPY /conf/eduPersonTargetedID.properties /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
-# COPY /conf/metadata-providers.xml /opt/shibboleth-idp/conf/metadata-providers.xml
+
 # Just copied the file, no volume
 COPY /conf/logback.xml /opt/shibboleth-idp/conf/logback.xml
 COPY /metadata/sp-metadata.xml /opt/shibboleth-idp/metadata/sp-metadata.xml
@@ -88,7 +83,5 @@ COPY /certs /opt/shibboleth-idp/certs
 # Ovnership of config files
 RUN chown root:root /opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
 RUN chown root:root /opt/shibboleth-idp/conf/attribute-resolver.xml
-
-
 
 EXPOSE 8080 8443 443
