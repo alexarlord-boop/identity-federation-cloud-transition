@@ -1,0 +1,61 @@
+<SPConfig xmlns="urn:mace:shibboleth:3.0:native:sp:config"
+    xmlns:conf="urn:mace:shibboleth:3.0:native:sp:config"
+    clockSkew="180">
+
+    <OutOfProcess tranLogFormat="%u|%s|%IDP|%i|%ac|%t|%attr|%n|%b|%E|%S|%SS|%L|%UA|%a" />
+  
+    <!--
+    By default, in-memory StorageService, ReplayCache, ArtifactMap, and SessionCache
+    are used. See example-shibboleth2.xml for samples of explicitly configuring them.
+    -->
+
+    <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
+    <!-- <ApplicationDefaults entityID="https://sp.example.org/shibboleth" -->
+    
+    <ApplicationDefaults entityID="https://sp.localtest.me/shibboleth"
+                     REMOTE_USER="eppn persistent-id targeted-id">
+        <Sessions lifetime="28800" timeout="3600" checkAddress="false" handlerSSL="true" cookieProps="https">
+            
+            <SSO entityID="https://idp.localtest.me/idp/shibboleth">
+            SAML2
+            </SSO>
+
+            <Logout>SAML2 Local</Logout>
+            <Handler type="MetadataGenerator" Location="/Metadata" />
+            <!-- STATUS acl is generilized -->
+            <Handler type="Status" Location="/Status" acl="0.0.0.0/0 ::/0" />
+            <Handler type="Session" Location="/Session" showAttributeValues="true"/>
+
+        </Sessions>
+
+        <MetadataProvider type="XML" url="https://idp.localtest.me/idp/shibboleth"
+                        backingFilePath="/etc/shibboleth/idp-metadata.xml"
+                        reloadInterval="7200">
+            <MetadataFilter type="RequireValidUntil" maxValidityInterval="2419200"/>
+        </MetadataProvider>
+
+       
+        <!-- <MetadataProvider type="XML" backingFilePath="/etc/shibboleth/idp-metadata.xml">
+            <MetadataFilter type="RequireValidUntil" maxValidityInterval="2419200"/>
+        </MetadataProvider> -->
+
+       <!-- <MetadataProvider type="XML"
+                  uri="http://idp.localtest.me:8080/idp/shibboleth"
+                  reloadInterval="86400000">
+    
+            <MetadataFilter type="RequireValidUntil" maxValidityInterval="2419200"/>
+            
+        </MetadataProvider> -->
+
+        <!-- <MetadataProvider type="XML" uri="http://idp.localtest.me:8080/idp/shibboleth">
+            <MetadataFilter type="RequireValidUntil" maxValidityInterval="2419200"/>
+        </MetadataProvider> -->
+    </ApplicationDefaults>
+        
+    <!-- Policies that determine how to process and authenticate runtime messages. -->
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+
+    <!-- Low-level configuration about protocols and bindings available for use. -->
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+
+</SPConfig>

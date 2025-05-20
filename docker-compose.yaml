@@ -1,0 +1,84 @@
+services:
+  idp:
+    hostname: idp.localtest.me
+    build:
+      context: ./IDP
+      dockerfile: Dockerfile
+    container_name: idp
+    ports:
+      - "8080:8080"
+      # - "8443:8443"
+      - "443:8443"
+    networks:
+      - my-network
+    depends_on:
+      openldap:
+        condition: service_healthy  
+    volumes:
+      - ./IDP/conf/server.xml:/usr/local/tomcat/conf/server.xml
+      - ./IDP/conf/idp.properties:/opt/shibboleth-idp/conf/idp.properties
+      - ./IDP/conf/secrets.properties:/opt/shibboleth-idp/credentials/secrets.properties
+      - ./IDP/conf/access-control.xml:/opt/shibboleth-idp/conf/access-control.xml
+      - ./IDP/conf/attribute-resolver.xml:/opt/shibboleth-idp/conf/attribute-resolver.xml
+      - ./IDP/conf/attribute-filter.xml:/opt/shibboleth-idp/conf/attribute-filter.xml
+      - ./IDP/conf/ldap.properties:/opt/shibboleth-idp/conf/ldap.properties
+      - ./IDP/conf/saml-nameid.xml:/opt/shibboleth-idp/conf/saml-nameid.xml
+      - ./IDP/conf/saml-nameid.properties:/opt/shibboleth-idp/conf/saml-nameid.properties
+      - ./IDP/conf/eduPersonTargetedID.properties:/opt/shibboleth-idp/conf/attributes/custom/eduPersonTargetedID.properties
+      - ./IDP/conf/metadata-providers.xml:/opt/shibboleth-idp/conf/metadata-providers.xml
+      - ./IDP/metadata/sp-metadata.xml:/opt/shibboleth-idp/metadata/sp-metadata.xml
+      - ./IDP/metadata/idp-metadata.xml:/opt/shibboleth-idp/metadata/idp-metadata.xml
+      - ./IDP/certs:/opt/shibboleth-idp/certs:ro
+  openldap:
+    build:
+      context: ./OpenLDAP
+      dockerfile: Dockerfile
+    ports:
+      - '389:389'
+      - '636:636'
+    healthcheck:
+      test: ["CMD", "ldapsearch", "-x", "-D", 'cn=idpuser,ou=system,dc=example,dc=org',  "-w", 'idpuserpass', "-b", "uid=user1,ou=people,dc=example,dc=org"]   
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - LDAP_DOMAIN=example.org
+      - LDAP_ORGANIZATION="Example Org"
+      - LDAP_ROOT_PW=ciaoldap
+      - LDAP_IDPUSER_PW=idpuserpass
+      - LDAP_HOSTNAME=ldap.example.org
+    container_name: openldap
+    hostname: openldap # This is the hostname of the container (installlation step 5)
+    networks:
+      - my-network
+  sp:
+    hostname: sp.localtest.me
+    build:
+      context: ./SP
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    container_name: sp
+    ports:
+      - "8443:443"
+      - "80:80"
+    volumes:
+      # - ./apache/default.conf:/etc/httpd/conf.d/ssl.conf:ro
+      - ./SP/ssl:/etc/ssl/private:ro
+      # - ./shibboleth:/etc/shibboleth:ro
+    environment:
+      - SHIBBOLETH_SP_HOSTNAME=sp.localtest.me
+    # restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "https://localhost/Shibboleth.sso/Status"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    depends_on:
+      - idp
+      - openldap
+    networks:
+      - my-network
+networks:
+  my-network:
+    driver: bridge
