@@ -1,0 +1,58 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: idp-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - federation-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /idp
+    route:
+    - destination:
+        host: idp
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: sp-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - federation-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /sp
+    route:
+    - destination:
+        host: sp
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: protected-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - federation-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /protected
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: protected-service
+        port:
+          number: 80
