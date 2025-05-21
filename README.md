@@ -11,10 +11,10 @@ This prototype models a minimal but functional academic federation stack. It inc
 
 - **Shibboleth Identity Provider (IdP)** with OpenLDAP
 - **Shibboleth Service Provider (SP)** integration with SAML
-- **Jagger Federation Registry** for metadata management
+- **Jagger Federation Registry (MDS)** for metadata management
 - **OpenLDAP storage for users
-- Kubernetes-native deployment (with Helm)
-- Docker-based local testing environment
+- Kubernetes-native deployment (federation-stack with Helm)
+
 
 ---
 
@@ -28,7 +28,6 @@ This prototype models a minimal but functional academic federation stack. It inc
 - Bash scripting & Makefiles
 
 ---
-
 
 
 ## 🤝 Acknowledgements
