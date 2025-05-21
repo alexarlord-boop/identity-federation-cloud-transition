@@ -13,7 +13,7 @@ This prototype models a minimal but functional academic federation stack. It inc
 - **Shibboleth Service Provider (SP)** integration with SAML
 - **Jagger Federation Registry (MDS)** for metadata management
 - **OpenLDAP** storage for users
-- **federation-stack** Kubernetes-native deployment with Helm
+- **federation-stack** -- Kubernetes-native deployment with Helm
 
 
 ---
